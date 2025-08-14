@@ -1,5 +1,13 @@
-import { Trash2Icon } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Heart, MapPinIcon, Trash2Icon } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
 
 const JobCard = ({ job, isMyJob = false, onJobSaved = () => {} }) => {
   const { user } = useUser();
@@ -18,7 +26,30 @@ const JobCard = ({ job, isMyJob = false, onJobSaved = () => {} }) => {
         </CardTitle>
       </CardHeader>
 
-      <CardContent></CardContent>
+      <CardContent className="flex flex-col gap-4 flex-1">
+        <div className="flex justify-between">
+          {job.company && <img src={job.company.logo_url} className="h-6" />}
+          <div className="flex gap-2 items-center">
+            <MapPinIcon size={15} /> {job.location}
+          </div>
+        </div>
+        <hr />
+        {job.description.substring(0, job.description.indexOf("."))}
+      </CardContent>
+      <CardFooter>
+        <Link to={`/job/${job.id}`} className="flex-1">
+          <Button variant="secondary" className="w-full">
+            More Details
+          </Button>
+        </Link>
+
+        <Heart
+          size={20}
+          stroke="red"
+          fill="
+        red"
+        />
+      </CardFooter>
     </Card>
   );
 };
