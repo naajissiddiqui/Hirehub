@@ -1,11 +1,11 @@
-import { SupabaseClient } from "@supabase/supabase-js";
-import supabase from "@/utils/supabase";
-export async function getJobs(token, { location, company_id, searchQuery }) {
-  const supabase = await SupabaseClient(token);
+import supabaseClient from "@/utils/supabase";
 
+// Fetch Jobs
+export async function getJobs(token, { location, company_id, searchQuery }) {
+  const supabase = await supabaseClient(token);
   let query = supabase
     .from("jobs")
-    .select("*, company:companies(name, logo_url),saved: saved_jobs(id");
+    .select("*, saved: saved_jobs(id), company: companies(name,logo_url)");
 
   if (location) {
     query = query.eq("location", location);
@@ -20,9 +20,11 @@ export async function getJobs(token, { location, company_id, searchQuery }) {
   }
 
   const { data, error } = await query;
+
   if (error) {
-    console.error("Error fetching jobs:", error);
+    console.error("Error fetching Jobs:", error);
     return null;
   }
+
   return data;
 }
