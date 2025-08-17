@@ -12,7 +12,7 @@ const JobListing = () => {
   const { isLoaded } = useUser();
   const {
     fn: fnJobs,
-    data: Jobs,
+    data: jobs,
     loading: loadingJobs,
   } = useFetch(getJobs, {
     location,
@@ -42,8 +42,10 @@ const JobListing = () => {
 
       {loadingJobs === false && (
         <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Jobs?.length ? (
-            Jobs.map((job) => <JobCard key={job.id} job={job} />)
+          {jobs?.length ? (
+            jobs.map((job) => {
+              return <JobCard key={job.id} job={job} />;
+            })
           ) : (
             <div>No Jobs Found</div>
           )}

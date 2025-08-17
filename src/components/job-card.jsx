@@ -8,6 +8,7 @@ import {
 } from "./ui/card";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import { useUser } from "@clerk/clerk-react";
 
 const JobCard = ({ job, isMyJob = false, onJobSaved = () => {} }) => {
   const { user } = useUser();

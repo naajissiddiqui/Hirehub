@@ -26,5 +26,8 @@ export async function getJobs(token, { location, company_id, searchQuery }) {
     return null;
   }
 
+  console.log("✅ Jobs fetched:", data); // sanity check
+  return data;
+
   return data;
 }
