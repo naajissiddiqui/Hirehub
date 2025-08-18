@@ -9,9 +9,38 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useUser } from "@clerk/clerk-react";
+import { saveJob } from "@/api/apiJobs";
+import useFetch from "@/hooks/use-fetch";
+import { useEffect, useState } from "react";
 
-const JobCard = ({ job, isMyJob = false, onJobSaved = () => {} }) => {
+const JobCard = ({
+  job,
+  isMyJob = false,
+  savedInit = false,
+  alreadySaved = false,
+  onJobSaved = () => {},
+}) => {
+  const [saved, setSaved] = useState(savedInit);
+  const {
+    fn: fnSavedJob,
+    data: SavedJob,
+    loading: loadingSavedJob,
+  } = useFetch(saveJob, { alreadySaved });
+
   const { user } = useUser();
+
+  const handleSaveJob = async () => {
+    await fnSavedJob({
+      user_id: user.id,
+      job_id: job.id,
+    });
+    onJobSaved();
+  };
+
+  useEffect(() => {
+    if (SavedJob !== undefined) setSaved(SavedJob?.length > 0);
+  }, [SavedJob]);
+
   return (
     <Card>
       <CardHeader>
@@ -44,12 +73,25 @@ const JobCard = ({ job, isMyJob = false, onJobSaved = () => {} }) => {
           </Button>
         </Link>
 
-        <Heart
-          size={20}
-          stroke="red"
-          fill="
+        {!isMyJob && (
+          <Button
+            variant="outline"
+            className="w-15"
+            onClick={handleSaveJob}
+            disabled={loadingSavedJob}
+          >
+            {saved ? (
+              <Heart
+                size={20}
+                stroke="red"
+                fill="
         red"
-        />
+              />
+            ) : (
+              <Heart size={20} />
+            )}
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
