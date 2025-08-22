@@ -131,3 +131,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+.wmde-markdown {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+/* Also fix list styling */
+.wmde-markdown ul {
+  list-style-type: disc;
+  padding-left: 25px;
+  color: white !important;
+}
+
+/* Ensure <li> items inherit white text */
+.wmde-markdown li {
+  color: white !important;
+}
