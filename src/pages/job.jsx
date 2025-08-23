@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-//import { ApplyJobDrawer } from "@/components/apply-job";
+import { ApplyJobDrawer } from "@/components/apply-job";
 // import ApplicationCard from "@/components/application-card";
 
 import useFetch from "@/hooks/use-fetch";
@@ -109,14 +109,15 @@ const JobPage = () => {
         source={job?.requirements}
         className="bg-transparent sm:text-lg" // add global ul styles - tutorial
       />
-      {/* {job?.recruiter_id !== user?.id && (
+      {/* render applications */}
+      {job?.recruiter_id !== user?.id && (
         <ApplyJobDrawer
           job={job}
           user={user}
           fetchJob={fnJob}
           applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
         />
-      )} */}
+      )}
     </div>
   );
 };
