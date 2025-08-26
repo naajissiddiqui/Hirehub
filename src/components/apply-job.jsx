@@ -20,25 +20,25 @@ import useFetch from "@/hooks/use-fetch";
 import { applyToJob } from "@/api/apiApplication";
 import { BarLoader } from "react-spinners";
 
-// const schema = z.object({
-//   experience: z
-//     .number()
-//     .min(0, { message: "Experience must be at least 0" })
-//     .int(),
-//   skills: z.string().min(1, { message: "Skills are required" }),
-//   education: z.enum(["Intermediate", "Graduate", "Post Graduate"], {
-//     message: "Education is required",
-//   }),
-//   resume: z
-//     .any()
-//     .refine(
-//       (file) =>
-//         file[0] &&
-//         (file[0].type === "application/pdf" ||
-//           file[0].type === "application/msword"),
-//       { message: "Only PDF or Word documents are allowed" }
-//     ),
-// });
+const schema = z.object({
+  experience: z
+    .number()
+    .min(0, { message: "Experience must be at least 0" })
+    .int(),
+  skills: z.string().min(1, { message: "Skills are required" }),
+  education: z.enum(["Intermediate", "Graduate", "Post Graduate"], {
+    message: "Education is required",
+  }),
+  resume: z
+    .any()
+    .refine(
+      (file) =>
+        file[0] &&
+        (file[0].type === "application/pdf" ||
+          file[0].type === "application/msword"),
+      { message: "Only PDF or Word documents are allowed" }
+    ),
+});
 
 // export function ApplyJobDrawer({ user, job, fetchJob, applied = false }) {
 //   const {
