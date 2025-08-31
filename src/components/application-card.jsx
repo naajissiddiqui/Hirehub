@@ -1,5 +1,4 @@
 // /* eslint-disable react/prop-types */
-// import { Boxes, BriefcaseBusiness, Download, School } from "lucide-react";
 import { Boxes, BriefcaseBusiness, Download, School } from "lucide-react";
 import {
   Card,
@@ -8,16 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "./ui/select";
-// import { updateApplicationStatus } from "@/api/apiApplication";
-// import useFetch from "@/hooks/use-fetch";
-// import { BarLoader } from "react-spinners";
+import { updateApplicationStatus } from "@/api/apiApplication";
+import { BarLoader } from "react-spinners";
+import useFetch from "@/hooks/use-fetch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 const ApplicationCard = ({ application, isCandidate = false }) => {
   const handleDownload = () => {
@@ -26,8 +25,21 @@ const ApplicationCard = ({ application, isCandidate = false }) => {
     link.target = "_blank";
     link.click();
   };
+
+  const { loading: loadingHiringStatus, fn: fnHiringStatus } = useFetch(
+    updateApplicationStatus,
+    {
+      job_id: application.job_id,
+    }
+  );
+
+  const handleStatusChange = (status) => {
+    fnHiringStatus(status).then(() => fnHiringStatus());
+  };
+
   return (
     <Card>
+      {loadingHiringStatus && <BarLoader width={"100%"} color="#36d7b7" />}
       <CardHeader>
         <CardTitle className="flex justify-between font-bold">
           {isCandidate
@@ -59,6 +71,26 @@ const ApplicationCard = ({ application, isCandidate = false }) => {
       </CardContent>
       <CardFooter>
         <span>{new Date(application?.created_at).toLocaleString()}</span>
+        {isCandidate ? (
+          <span className="capitalize font-bold">
+            Status: {application?.status}
+          </span>
+        ) : (
+          <Select
+            onValuechange={handleStatusChange}
+            defaultValue={application.status}
+          >
+            <SelectTrigger className="w-52">
+              <SelectValue placeholder="Application Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="applied">Applied</SelectItem>
+              <SelectItem value="interviewing">Interviewing</SelectItem>
+              <SelectItem value="hired">Hired</SelectItem>
+              <SelectItem value="rejected">Rejected</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
       </CardFooter>
     </Card>
   );
@@ -69,17 +101,6 @@ const ApplicationCard = ({ application, isCandidate = false }) => {
 //     link.href = application?.resume;
 //     link.target = "_blank";
 //     link.click();
-//   };
-
-//   const { loading: loadingHiringStatus, fn: fnHiringStatus } = useFetch(
-//     updateApplicationStatus,
-//     {
-//       job_id: application.job_id,
-//     }
-//   );
-
-//   const handleStatusChange = (status) => {
-//     fnHiringStatus(status).then(() => fnHiringStatus());
 //   };
 
 //   return (
