@@ -14,6 +14,7 @@ import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import MDEditor from "@uiw/react-md-editor";
+import { error } from "console";
 import { State } from "country-state-city";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -50,6 +51,29 @@ const PostJob = () => {
           <p className="text-red-500">{errors.tittle.message}</p>
         )}
       </form>
+
+      <Textarea placeholder="Job Description " {...register("description")}>
+        {errors.description && (
+          <p className="text-red-500">{errors.description.message}</p>
+        )}
+      </Textarea>
+
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Filter by Location" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {State.getStatesOfCountry("IN").map(({ name }) => {
+              return (
+                <SelectItem key={name} value={name}>
+                  {name}
+                </SelectItem>
+              );
+            })}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
   );
 };
